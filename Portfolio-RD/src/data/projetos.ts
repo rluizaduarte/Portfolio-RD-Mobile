@@ -12,10 +12,18 @@ export type Projeto = {
 export const projetos: Projeto[] = [
   {
     titulo: "Qina Design",
-    imagem: require("@/assets/images/projetos/qina.png"),
+    imagem: require("@/assets/images/projetos/qina-design.png"),
     descricao:
       "Projeto integrador desenvolvido com a empresa Qina Design: um sistema para atualizar e gerenciar o status dos pedidos, com login autenticado. O front-end usa React, Vite e TypeScript e o back-end é uma API em NestJS com Prisma e PostgreSQL.",
-    tags: ["React", "Vite", "TypeScript", "NestJS", "Prisma", "PostgreSQL", "JWT"],
+    tags: [
+      "React",
+      "Vite",
+      "TypeScript",
+      "NestJS",
+      "Prisma",
+      "PostgreSQL",
+      "JWT",
+    ],
     github: "https://github.com/rluizaduarte/QinaDesign",
     site: "https://qinadesign.vercel.app/login",
   },
@@ -34,7 +42,8 @@ export const projetos: Projeto[] = [
     descricao:
       "Jogo da forca clássico feito em React, com palavra sorteada de uma lista com mais de 30 opções, teclado na tela, registro das letras já usadas e telas de vitória e derrota. Uma versão em React Native está na aba Jogo deste app!",
     tags: ["React", "TypeScript", "Jogo"],
-    github: "https://github.com/rluizaduarte/Programacao-Web-e-Mobile/tree/main/jogo-da-forca",
+    github:
+      "https://github.com/rluizaduarte/Programacao-Web-e-Mobile/tree/main/jogo-da-forca",
     site: "https://jogo-da-forca-ten-kappa.vercel.app/",
   },
 ];
