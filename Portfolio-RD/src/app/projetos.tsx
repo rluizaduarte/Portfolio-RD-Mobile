@@ -1,12 +1,26 @@
-import { StyleSheet, Text, View } from "react-native";
-import { cores } from "@/constants/theme";
+import { useState } from "react";
+import { ScrollView, StyleSheet } from "react-native";
+import { cores, espacos } from "@/constants/theme";
+import { projetos } from "@/data/projetos";
+import Titulo from "@/components/Titulo";
+import CardProjeto from "@/components/CardProjeto";
 
 export default function Projetos() {
+  const [aberto, setAberto] = useState(false);
+
   return (
-    <View style={styles.tela}>
-      <Text style={styles.titulo}>Projetos</Text>
-      <Text style={styles.texto}>Em construção...</Text>
-    </View>
+    <ScrollView style={styles.tela} contentContainerStyle={styles.conteudo}>
+      <Titulo pequeno="O QUE EU JÁ CONSTRUÍ" grande="Projetos" escuro />
+
+      {projetos.map((projeto) => (
+        <CardProjeto
+          key={projeto.titulo}
+          projeto={projeto}
+          aberto={aberto}
+          onPress={() => setAberto(!aberto)}
+        />
+      ))}
+    </ScrollView>
   );
 }
 
@@ -14,16 +28,8 @@ const styles = StyleSheet.create({
   tela: {
     flex: 1,
     backgroundColor: cores.escuro,
-    alignItems: "center",
-    justifyContent: "center",
   },
-  titulo: {
-    color: cores.branco,
-    fontSize: 32,
-    fontWeight: "800",
-  },
-  texto: {
-    color: cores.branco,
-    marginTop: 8,
+  conteudo: {
+    padding: espacos.tela,
   },
 });
