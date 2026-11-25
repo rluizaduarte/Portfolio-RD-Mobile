@@ -6,18 +6,18 @@ import Titulo from "@/components/Titulo";
 import CardProjeto from "@/components/CardProjeto";
 
 export default function Projetos() {
-  const [aberto, setAberto] = useState(false);
+  const [aberto, setAberto] = useState<number | null>(null);
 
   return (
     <ScrollView style={styles.tela} contentContainerStyle={styles.conteudo}>
       <Titulo pequeno="O QUE EU JÁ CONSTRUÍ" grande="Projetos" escuro />
 
-      {projetos.map((projeto) => (
+      {projetos.map((projeto, indice) => (
         <CardProjeto
           key={projeto.titulo}
           projeto={projeto}
-          aberto={aberto}
-          onPress={() => setAberto(!aberto)}
+          aberto={aberto === indice}
+          onPress={() => setAberto(aberto === indice ? null : indice)}
         />
       ))}
     </ScrollView>
