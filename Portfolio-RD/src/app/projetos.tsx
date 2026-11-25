@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text } from "react-native";
+import { LayoutAnimation, ScrollView, StyleSheet, Text } from "react-native";
 import { cores, espacos } from "@/constants/theme";
 import { projetos } from "@/data/projetos";
 import Titulo from "@/components/Titulo";
 import CardProjeto from "@/components/CardProjeto";
+import Rodape from "@/components/Rodape";
 
 export default function Projetos() {
   const [aberto, setAberto] = useState<number | null>(null);
 
   function alternar(indice: number) {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setAberto(aberto === indice ? null : indice);
   }
 
@@ -25,6 +27,8 @@ export default function Projetos() {
           onPress={() => alternar(indice)}
         />
       ))}
+
+      <Rodape />
     </ScrollView>
   );
 }

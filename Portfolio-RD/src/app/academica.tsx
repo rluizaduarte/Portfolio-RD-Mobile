@@ -8,7 +8,7 @@ import LinhaDoTempo from "@/components/LinhaDoTempo";
 export default function Academica() {
   return (
     <ScrollView style={styles.tela} contentContainerStyle={styles.conteudo}>
-      <Titulo pequeno="FORMAÇÃO" grande="Experiência Acadêmica" />
+      <Titulo pequeno="ONDE ESTUDO" grande="Formação" />
 
       <View style={styles.cardFormacao}>
         <View style={styles.linhaFormacao}>

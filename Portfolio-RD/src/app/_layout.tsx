@@ -1,12 +1,13 @@
 import { Tabs } from "expo-router/js-tabs";
 import { StatusBar } from "expo-status-bar";
+import { ColorValue } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { cores } from "@/constants/theme";
 
 type NomeIcone = keyof typeof Ionicons.glyphMap;
 
 function icone(nome: NomeIcone) {
-  return ({ color, size }: { color: string; size: number }) => (
+  return ({ color, size }: { color: ColorValue; size: number }) => (
     <Ionicons name={nome} color={color} size={size} />
   );
 }
@@ -40,11 +41,19 @@ export default function RootLayout() {
         />
         <Tabs.Screen
           name="academica"
-          options={{ title: "Acadêmica", tabBarIcon: icone("school-outline") }}
+          options={{
+            title: "Experiência Acadêmica",
+            tabBarLabel: "Acadêmica",
+            tabBarIcon: icone("school-outline"),
+          }}
         />
         <Tabs.Screen
           name="profissional"
-          options={{ title: "Profissional", tabBarIcon: icone("briefcase-outline") }}
+          options={{
+            title: "Experiência Profissional",
+            tabBarLabel: "Trabalho",
+            tabBarIcon: icone("briefcase-outline"),
+          }}
         />
         <Tabs.Screen
           name="projetos"

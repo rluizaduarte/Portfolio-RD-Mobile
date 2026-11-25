@@ -8,7 +8,7 @@ import Tag from "@/components/Tag";
 export default function Profissional() {
   return (
     <ScrollView style={styles.tela} contentContainerStyle={styles.conteudo}>
-      <Titulo pequeno="ONDE JÁ TRABALHEI" grande="Experiência Profissional" escuro />
+      <Titulo pequeno="ONDE JÁ TRABALHEI" grande="Carreira" escuro />
 
       {experienciasProfissionais.map((experiencia) => (
         <View key={experiencia.cargo} style={styles.card}>

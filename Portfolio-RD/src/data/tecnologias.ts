@@ -98,4 +98,13 @@ export const habilidades: GrupoHabilidades[] = [
       { nome: "Jira" },
     ],
   },
+  {
+    titulo: "Metodologias e idiomas",
+    itens: [
+      { nome: "Scrum" },
+      { nome: "Kanban" },
+      { nome: "Português (nativo)" },
+      { nome: "Inglês (avançado)" },
+    ],
+  },
 ];

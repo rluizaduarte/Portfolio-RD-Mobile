@@ -4,6 +4,7 @@ import { Href, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { cores } from "@/constants/theme";
 import Botao from "@/components/Botao";
+import FundoAnimado from "@/components/FundoAnimado";
 import Rodape from "@/components/Rodape";
 
 const LINK_CV = "https://github.com/rluizaduarte/Portfolio-RD/blob/main/portfolio/public/Rielly-CV.pdf";
@@ -38,6 +39,7 @@ export default function Home() {
 
   return (
     <SafeAreaView style={styles.tela} edges={["top"]}>
+      <FundoAnimado />
       <ScrollView contentContainerStyle={styles.conteudo} showsVerticalScrollIndicator={false}>
         <View style={styles.topo}>
           <View style={styles.avatarBorda}>

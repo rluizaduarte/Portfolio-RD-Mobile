@@ -9,13 +9,19 @@ import Botao from "@/components/Botao";
 const MAX_ERROS = 6;
 const ALFABETO = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-function sortearPalavra(): Palavra {
-  return palavras[Math.floor(Math.random() * palavras.length)];
+function sortearPalavra(anterior?: Palavra): Palavra {
+  let nova = palavras[Math.floor(Math.random() * palavras.length)];
+  while (anterior && nova.palavra === anterior.palavra) {
+    nova = palavras[Math.floor(Math.random() * palavras.length)];
+  }
+  return nova;
 }
 
 export default function Jogo() {
-  const [atual, setAtual] = useState<Palavra>(sortearPalavra());
+  const [atual, setAtual] = useState<Palavra>(() => sortearPalavra());
   const [tentativas, setTentativas] = useState<string[]>([]);
+  const [vitorias, setVitorias] = useState(0);
+  const [derrotas, setDerrotas] = useState(0);
 
   const letrasDaPalavra = atual.palavra.split("");
   const erros = tentativas.filter((letra) => !atual.palavra.includes(letra)).length;
@@ -24,12 +30,21 @@ export default function Jogo() {
   const acabou = venceu || perdeu;
 
   function chutar(letra: string) {
-    if (acabou) return;
-    setTentativas([...tentativas, letra]);
+    if (acabou || tentativas.includes(letra)) return;
+
+    const novasTentativas = [...tentativas, letra];
+    setTentativas(novasTentativas);
+
+    const novosErros = novasTentativas.filter((l) => !atual.palavra.includes(l)).length;
+    const ganhou = letrasDaPalavra.every((l) => novasTentativas.includes(l));
+
+    if (ganhou) setVitorias(vitorias + 1);
+    else if (novosErros >= MAX_ERROS) setDerrotas(derrotas + 1);
   }
 
   function novoJogo() {
-    setAtual(sortearPalavra());
+    setAtual(sortearPalavra(atual));
+    setTentativas([]);
   }
 
   function corDaTecla(letra: string) {
@@ -40,9 +55,26 @@ export default function Jogo() {
 
   return (
     <ScrollView style={styles.tela} contentContainerStyle={styles.conteudo}>
-      <Text style={styles.erros}>
-        Erros: {erros}/{MAX_ERROS}
-      </Text>
+      <View style={styles.placar}>
+        <View style={styles.itemPlacar}>
+          <Ionicons name="trophy" size={16} color={cores.verde} />
+          <Text style={styles.textoPlacar}>{vitorias}</Text>
+        </View>
+        <View style={styles.vidas}>
+          {Array.from({ length: MAX_ERROS }).map((_, i) => (
+            <Ionicons
+              key={i}
+              name={i < MAX_ERROS - erros ? "heart" : "heart-outline"}
+              size={18}
+              color={cores.laranja}
+            />
+          ))}
+        </View>
+        <View style={styles.itemPlacar}>
+          <Ionicons name="skull" size={16} color={cores.vermelho} />
+          <Text style={styles.textoPlacar}>{derrotas}</Text>
+        </View>
+      </View>
 
       <Forca erros={erros} />
 
@@ -52,23 +84,38 @@ export default function Jogo() {
       </View>
 
       <View style={styles.palavra}>
-        {letrasDaPalavra.map((letra, i) => (
-          <View key={i} style={styles.espacoLetra}>
-            <Text style={styles.letra}>{tentativas.includes(letra) ? letra : ""}</Text>
-          </View>
-        ))}
+        {letrasDaPalavra.map((letra, i) => {
+          const mostrar = tentativas.includes(letra) || perdeu;
+          const faltou = perdeu && !tentativas.includes(letra);
+          return (
+            <View key={i} style={styles.espacoLetra}>
+              <Text style={[styles.letra, faltou && styles.letraFaltou]}>
+                {mostrar ? letra : ""}
+              </Text>
+            </View>
+          );
+        })}
       </View>
 
       {acabou ? (
-        <View style={styles.resultado}>
-          <Text style={styles.tituloResultado}>{venceu ? "Você acertou!" : "Você perdeu!"}</Text>
-          <Text style={styles.textoResultado}>A palavra era {atual.palavra}.</Text>
+        <View style={[styles.resultado, venceu ? styles.resultadoVitoria : styles.resultadoDerrota]}>
+          <Text style={styles.tituloResultado}>{venceu ? "Você acertou! 🎉" : "Não foi dessa vez!"}</Text>
+          <Text style={styles.textoResultado}>
+            {venceu
+              ? `Você descobriu a palavra com ${erros} ${erros === 1 ? "erro" : "erros"}.`
+              : `A palavra era ${atual.palavra}.`}
+          </Text>
           <Botao texto="Jogar novamente" icone="refresh" onPress={novoJogo} />
         </View>
       ) : (
         <View style={styles.teclado}>
           {ALFABETO.map((letra) => (
-            <Pressable key={letra} onPress={() => chutar(letra)} style={corDaTecla(letra)}>
+            <Pressable
+              key={letra}
+              onPress={() => chutar(letra)}
+              disabled={tentativas.includes(letra)}
+              style={corDaTecla(letra)}
+            >
               <Text style={styles.textoTecla}>{letra}</Text>
             </Pressable>
           ))}
@@ -87,12 +134,29 @@ const styles = StyleSheet.create({
     padding: espacos.tela,
     paddingBottom: 40,
   },
-  erros: {
+  placar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: cores.escuroCard,
+    borderRadius: espacos.raio,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    marginBottom: 24,
+  },
+  itemPlacar: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  textoPlacar: {
     color: cores.branco,
-    fontWeight: "700",
+    fontWeight: "800",
     fontSize: 16,
-    textAlign: "center",
-    marginBottom: 20,
+  },
+  vidas: {
+    flexDirection: "row",
+    gap: 3,
   },
   dica: {
     flexDirection: "row",
@@ -125,6 +189,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "800",
     height: 32,
+  },
+  letraFaltou: {
+    color: cores.vermelho,
   },
   teclado: {
     flexDirection: "row",
@@ -159,8 +226,15 @@ const styles = StyleSheet.create({
     gap: 10,
     borderRadius: espacos.raio,
     borderWidth: 1.5,
-    borderColor: cores.laranja,
     padding: 20,
+  },
+  resultadoVitoria: {
+    borderColor: cores.verde,
+    backgroundColor: "rgba(76,175,122,0.1)",
+  },
+  resultadoDerrota: {
+    borderColor: cores.vermelho,
+    backgroundColor: "rgba(229,72,77,0.1)",
   },
   tituloResultado: {
     color: cores.branco,
