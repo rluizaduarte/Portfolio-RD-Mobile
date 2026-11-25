@@ -4,7 +4,10 @@ import { cores } from "@/constants/theme";
 export default function Home() {
   return (
     <View style={styles.tela}>
-      <Image source="../../assets/images/avatar.jpg" style={styles.avatar} />
+      <Image
+        source={require("../assets/images/avatar.jpg")}
+        style={styles.avatar}
+      />
 
       <Text style={styles.nome}>Rielly Duarte</Text>
       <Text style={styles.subtitulo}>Estudante de Ciência da Computação</Text>
