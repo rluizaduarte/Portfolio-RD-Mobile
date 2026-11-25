@@ -1,73 +1,58 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { cores, espacos } from "@/constants/theme";
-import { formacao, linhaDoTempo } from "@/data/experiencias";
-import Titulo from "@/components/Titulo";
-import LinhaDoTempo from "@/components/LinhaDoTempo";
+import { cores } from "@/constants/theme";
 
-export default function Academica() {
+type Props = {
+  texto: string;
+  icone: keyof typeof Ionicons.glyphMap;
+  onPress: () => void;
+  variante?: "cheio" | "contorno";
+};
+
+export default function Botao({ texto, icone, onPress, variante = "cheio" }: Props) {
+  const cheio = variante === "cheio";
+  const corTexto = cheio ? cores.branco : cores.laranja;
+
   return (
-    <ScrollView style={styles.tela} contentContainerStyle={styles.conteudo}>
-      <Titulo pequeno="FORMAÇÃO" grande="Experiência Acadêmica" />
-
-      <View style={styles.cardFormacao}>
-        <Ionicons name="school" size={26} color={cores.laranja} />
-        <View style={styles.textosFormacao}>
-          <Text style={styles.curso}>{formacao.curso}</Text>
-          <Text style={styles.instituicao}>{formacao.instituicao}</Text>
-          <Text style={styles.instituicao}>
-            {formacao.periodo} • CR {formacao.cr}
-          </Text>
-        </View>
-      </View>
-
-      <View style={styles.secao}>
-        <Text style={styles.subtitulo}>Minha trajetória</Text>
-        <LinhaDoTempo itens={linhaDoTempo} />
-      </View>
-
-      <View style={styles.secao}>
-        <Text style={styles.subtitulo}>Atividades</Text>
-      </View>
-    </ScrollView>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.botao,
+        cheio ? styles.cheio : styles.contorno,
+        pressed && styles.pressionado,
+      ]}
+    >
+      <Ionicons name={icone} size={18} color={corTexto} />
+      <Text style={[styles.texto, { color: corTexto }]}>{texto}</Text>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  tela: {
-    flex: 1,
-    backgroundColor: cores.claro,
-  },
-  conteudo: {
-    padding: espacos.tela,
-  },
-  cardFormacao: {
+  botao: {
     flexDirection: "row",
-    gap: 14,
-    backgroundColor: cores.escuro,
-    borderRadius: espacos.raio,
-    padding: espacos.card,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    borderRadius: 30,
+    borderWidth: 1.5,
   },
-  textosFormacao: {
-    flex: 1,
+  cheio: {
+    backgroundColor: cores.laranja,
+    borderColor: cores.laranja,
   },
-  curso: {
-    color: cores.branco,
-    fontSize: 17,
+  contorno: {
+    backgroundColor: "transparent",
+    borderColor: cores.laranja,
+  },
+  pressionado: {
+    opacity: 0.75,
+    transform: [{ scale: 0.97 }],
+  },
+  texto: {
     fontWeight: "700",
-  },
-  instituicao: {
-    color: cores.textoClaro,
-    fontSize: 14,
-    marginTop: 4,
-  },
-  secao: {
-    marginTop: 32,
-  },
-  subtitulo: {
-    color: cores.texto,
-    fontSize: 22,
-    fontWeight: "800",
-    marginBottom: 18,
+    fontSize: 15,
   },
 });

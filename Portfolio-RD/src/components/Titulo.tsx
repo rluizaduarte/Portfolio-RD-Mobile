@@ -11,11 +11,7 @@ export default function Titulo({ pequeno, grande, escuro = false }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.pequeno}>{pequeno}</Text>
-      <Text
-        style={[styles.grande, { color: escuro ? cores.branco : cores.texto }]}
-      >
-        {grande}
-      </Text>
+      <Text style={[styles.grande, { color: escuro ? cores.branco : cores.texto }]}>{grande}</Text>
       <View style={styles.linha} />
     </View>
   );

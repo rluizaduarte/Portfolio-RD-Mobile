@@ -1,11 +1,4 @@
-import {
-  Image,
-  Linking,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, Linking, Pressable, StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { cores, espacos } from "@/constants/theme";
 import { Projeto } from "@/data/projetos";
@@ -19,10 +12,7 @@ type Props = {
 
 export default function CardProjeto({ projeto, aberto, onPress }: Props) {
   return (
-    <Pressable
-      onPress={onPress}
-      style={[styles.card, aberto && styles.cardAberto]}
-    >
+    <Pressable onPress={onPress} style={[styles.card, aberto && styles.cardAberto]}>
       <Image source={projeto.imagem} style={styles.imagem} />
 
       <View style={styles.corpo}>
@@ -46,24 +36,14 @@ export default function CardProjeto({ projeto, aberto, onPress }: Props) {
             </View>
 
             <View style={styles.links}>
-              <Pressable
-                style={styles.link}
-                onPress={() => Linking.openURL(projeto.github)}
-              >
+              <Pressable style={styles.link} onPress={() => Linking.openURL(projeto.github)}>
                 <Ionicons name="logo-github" size={18} color={cores.laranja} />
                 <Text style={styles.textoLink}>GitHub</Text>
               </Pressable>
 
               {projeto.site && (
-                <Pressable
-                  style={styles.link}
-                  onPress={() => Linking.openURL(projeto.site!)}
-                >
-                  <Ionicons
-                    name="open-outline"
-                    size={18}
-                    color={cores.laranja}
-                  />
+                <Pressable style={styles.link} onPress={() => Linking.openURL(projeto.site!)}>
+                  <Ionicons name="open-outline" size={18} color={cores.laranja} />
                   <Text style={styles.textoLink}>Ver site</Text>
                 </Pressable>
               )}
