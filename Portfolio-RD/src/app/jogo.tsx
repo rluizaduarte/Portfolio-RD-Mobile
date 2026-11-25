@@ -2,9 +2,7 @@ import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { cores, espacos } from "@/constants/theme";
 import { palavras } from "@/data/palavras";
-
-const ALFABETO = "abcdefghijklmnopqrstuvwxyz".split("");
-
+const ALFABETO = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 export default function Jogo() {
   const [atual] = useState(
     palavras[Math.floor(Math.random() * palavras.length)],
